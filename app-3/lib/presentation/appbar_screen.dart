@@ -28,10 +28,12 @@ class AppBarScreen extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         TextButton(
           /// Сохраняем выбранную тему и схему в хранилище
-          onPressed: () async {
-            await AppTheme().saveTheme(
-                currentTheme.selectedTheme, currentTheme.selectedScheme);
-          },
+          onPressed: () {},
+          // onPressed: () async {
+          //   await AppTheme().saveTheme(
+          //       CurrentThemeInherited.of(context).currentTheme.selectedTheme,
+          //       CurrentThemeInherited.of(context).currentTheme.selectedScheme);
+          // },
           child: const Text(
             TextConstants.textSave,
           ),

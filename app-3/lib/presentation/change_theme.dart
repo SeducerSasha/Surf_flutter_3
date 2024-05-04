@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:surf_flutter_courses_template/constants/assets_constants.dart';
 import 'package:surf_flutter_courses_template/constants/color_constants.dart';
 import 'package:surf_flutter_courses_template/constants/text_constants.dart';
+import 'package:surf_flutter_courses_template/theme/app_theme.dart';
 import 'package:surf_flutter_courses_template/theme/current_theme.dart';
 
 class ChangeTheme extends StatefulWidget {
@@ -16,20 +17,21 @@ class ChangeTheme extends StatefulWidget {
 class _ChangeThemeState extends State<ChangeTheme> {
   @override
   Widget build(BuildContext context) {
+    PreferencesTheme _currentTheme = AppTheme.of(context).currentTheme;
     return Column(
       /// Описание возможных тем: системная, светлая и темная
       children: [
         ListTile(
           title: const Text(TextConstants.textThemeSystem),
           leading: Radio(
-            value: 0,
-            groupValue: currentTheme.selectedTheme,
+            value: PreferencesTheme.system,
+            groupValue: _currentTheme,
+            // .currentTheme
+            // .selectedTheme, //currentTheme.selectedTheme,
             onChanged: (value) {
               /// При выборе меняем значения выбранной темы
               setState(() {
-                currentTheme.selectedTheme = value!;
-                currentTheme.selectedScheme = value;
-                currentTheme.nameSelectedTheme = TextConstants.textThemeSystem;
+                _currentTheme = value!;
               });
             },
           ),
@@ -37,38 +39,36 @@ class _ChangeThemeState extends State<ChangeTheme> {
         ListTile(
           title: const Text(TextConstants.textThemeLigth),
           leading: Radio(
-            value: 1,
-            groupValue: currentTheme.selectedTheme,
+            value: PreferencesTheme.light1,
+            groupValue: _currentTheme,
             onChanged: (value) {
               setState(() {
                 /// При выборе меняем значения выбранной темы
-                currentTheme.selectedTheme = value!;
-                currentTheme.nameSelectedTheme = TextConstants.textThemeLigth;
+                _currentTheme = value!;
               });
             },
           ),
         ),
         VisibleScheme(
           /// Определяем, показывать выбор схемы или нет
-          visible: (currentTheme.selectedTheme == 1) ? true : false,
+          visible: (_currentTheme == PreferencesTheme.light1) ? true : false,
         ),
         ListTile(
           title: const Text(TextConstants.textThemeDark),
           leading: Radio(
-            value: 4,
-            groupValue: currentTheme.selectedTheme,
+            value: PreferencesTheme.dark1,
+            groupValue: _currentTheme,
             onChanged: (value) {
               /// При выборе меняем значения выбранной темы
               setState(() {
-                currentTheme.selectedTheme = value!;
-                currentTheme.nameSelectedTheme = TextConstants.textThemeDark;
+                _currentTheme = value!;
               });
             },
           ),
         ),
         VisibleScheme(
           /// Определяем, показывать выбор схемы или нет
-          visible: (currentTheme.selectedTheme == 4) ? true : false,
+          visible: (_currentTheme == PreferencesTheme.dark1) ? true : false,
         ),
         const Expanded(child: SizedBox()),
         Padding(
@@ -76,7 +76,7 @@ class _ChangeThemeState extends State<ChangeTheme> {
           child: ElevatedButton(
             onPressed: () {
               /// Возвращаемся на главный экран
-              Navigator.of(context).pop(currentTheme.selectedTheme);
+              Navigator.of(context).pop(_currentTheme);
             },
             child: const Text(TextConstants.textDone),
           ),
@@ -101,9 +101,12 @@ class VisibleScheme extends StatefulWidget {
 class _VisibleSchemeState extends State<VisibleScheme> {
   @override
   Widget build(BuildContext context) {
+    PreferencesTheme _currentTheme = AppTheme.of(context).currentTheme;
+    ThemeMode themeMode = AppTheme.of(context).themeMode;
+
     /// Меняем декорацию контейнера в зависимости от выбора схемы
-    BoxDecoration decorationContainer(final numberScheme) {
-      if (currentTheme.selectedScheme == numberScheme) {
+    BoxDecoration decorationContainer(final selectedTheme) {
+      if (_currentTheme == selectedTheme) {
         return BoxDecoration(
           borderRadius: BorderRadius.circular(6),
           border: Border.all(color: Theme.of(context).iconTheme.color!),
@@ -114,8 +117,8 @@ class _VisibleSchemeState extends State<VisibleScheme> {
     }
 
     /// Меняет стиль текста в зависимости от выбора схемы
-    TextStyle? textStyle(final numberScheme) {
-      if (currentTheme.selectedScheme == numberScheme) {
+    TextStyle? textStyle(final selectedTheme) {
+      if (_currentTheme == selectedTheme) {
         return Theme.of(context).textTheme.titleMedium ??
             const TextStyle(color: ColorConstants.black);
       } else {
@@ -143,8 +146,11 @@ class _VisibleSchemeState extends State<VisibleScheme> {
                         onTap: () {
                           setState(() {
                             /// При выборе схемы меняем значения
-                            currentTheme.selectedScheme = 0;
-                            currentTheme.nameTheme;
+                            _currentTheme = themeMode == ThemeMode.light
+                                ? PreferencesTheme.light1
+                                : PreferencesTheme.dark1;
+
+                            // AppTheme.of(context).nameTheme;
                           });
                         },
                         child: Container(
@@ -167,8 +173,10 @@ class _VisibleSchemeState extends State<VisibleScheme> {
                         onTap: () {
                           setState(() {
                             /// При выборе схемы меняем значения
-                            currentTheme.selectedScheme = 1;
-                            currentTheme.nameTheme;
+                            _currentTheme = themeMode == ThemeMode.light
+                                ? PreferencesTheme.light2
+                                : PreferencesTheme.dark2;
+                            // AppTheme.of(context).nameTheme;
                           });
                         },
                         child: Container(
@@ -191,8 +199,10 @@ class _VisibleSchemeState extends State<VisibleScheme> {
                         onTap: () {
                           setState(() {
                             /// При выборе схемы меняем значения
-                            currentTheme.selectedScheme = 2;
-                            currentTheme.nameTheme;
+                            _currentTheme = themeMode == ThemeMode.light
+                                ? PreferencesTheme.light3
+                                : PreferencesTheme.dark3;
+                            //AppTheme.of(context).nameTheme;
                           });
                         },
                         child: Container(

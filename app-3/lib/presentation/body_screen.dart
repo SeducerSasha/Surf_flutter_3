@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:surf_flutter_courses_template/constants/assets_constants.dart';
 import 'package:surf_flutter_courses_template/constants/text_constants.dart';
 import 'package:surf_flutter_courses_template/presentation/change_theme.dart';
+import 'package:surf_flutter_courses_template/theme/app_theme.dart';
 import 'package:surf_flutter_courses_template/theme/current_theme.dart';
 
 /// Вывод основного тела экрана с применением текущей темы/схемы
@@ -94,7 +95,8 @@ class BodyScreen extends StatelessWidget {
                 ),
                 ProfileValue(
                   title: TextConstants.textThemeTitle,
-                  value: currentTheme.nameTheme,
+                  value:
+                      AppTheme.of(context).nameTheme, //currentTheme.nameTheme,
                   icons: Icons.arrow_forward_ios_outlined,
                   showBottomSheet: true,
                 ),
@@ -158,7 +160,8 @@ class _ProfileValueState extends State<ProfileValue> {
                   //Если выводится информация о теме - указываем выбранную тему
                   Text(
                     widget.showBottomSheet == true
-                        ? currentTheme.nameTheme
+                        ? AppTheme.of(context)
+                            .nameTheme //currentTheme.nameTheme
                         : widget.value,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
@@ -182,9 +185,12 @@ class _ProfileValueState extends State<ProfileValue> {
                           );
 
                           /// Перерисовываем экран после выбора темы.
-                          currentTheme.toggleTheme();
+                          // CurrentThemeInherited.of(context)
+                          //     .currentTheme
+                          //     .toggleTheme; // currentTheme.toggleTheme();
                           setState(() {
-                            currentTheme.nameTheme;
+                            AppTheme.of(context)
+                                .nameTheme; // currentTheme.nameTheme;
                           });
                         }
                       },
